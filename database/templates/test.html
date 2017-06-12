@@ -1,0 +1,55 @@
+
+<!doctype html>
+<html>
+<head>
+    {%load static%}
+    <script src="{%static "/js/cytoscape.js"%}"></script>
+    <script type="text/javascript" src="{%static "js/jquery.min.js"%}"></script>
+
+</head>
+<style>
+#cy {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    top: 0px;
+    left: 0px;
+}
+</style>
+<body>
+    <!-- <div id="cy">
+    <script>
+    $.getJSON('/static/data1.json', function(datas){
+        var cy = cytoscape({
+            container: document.getElementById('cy'),
+            elements:datas,
+            style: [
+                {
+                    selector: 'node',
+                    style: {
+                        'width':10,
+                        'height':10,
+                        //shape: 'hexagon',
+                        'background-color': '#6FB1FC',//'#EDA1ED', '#86B342', '#F5A45D'
+                        //label: 'data(id)'
+                    }
+                },
+                {
+                    selector : 'edge',
+                    style : {
+                        'width' : 0.5,
+                        //'line-color':'#B1C1F2'
+                    }
+                }
+            ],
+            layout: {
+                name:'cose'
+            }
+        });
+    })
+    </script>
+    </div> -->
+
+    <button  onclick="javascript:window.open('http://www.baidu.com')">Label</button>
+</body>
+</html>

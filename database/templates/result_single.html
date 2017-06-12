@@ -1,0 +1,162 @@
+<html>
+<head>
+    <title>Search</title>
+    {% load  static %}
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <link href="{%static "css/bootstrap.min.css"%}" rel="stylesheet">
+    <link href="{%static "css/style.css"%}" rel="stylesheet">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <script type="text/javascript" src="{%static "js/jquery.min.js"%}"></script>
+    <script type="text/javascript" src="{%static "/js/bootstrap.min.js"%}"></script>
+    <link href="{%static "/css/font-awesome.min.css"%}" rel="stylesheet" type="text/css">
+    <link href="{%static "css/bootstrap.css"%}" rel="stylesheet" type="text/css">
+</head>
+<body>
+  <div class="navbar navbar-default navbar-inverse navbar-fixed-top">
+      <div class="container">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar-ex-collapse">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand"><span>Lnc2Catlas</span></a>
+        </div>
+        <div class="collapse navbar-collapse" id="navbar-ex-collapse">
+          <ul class="nav navbar-nav navbar-right ">
+            <li>
+              <a href="/home/">Home</a>
+            </li>
+            <li>
+              <a href="/browse/1/20/">Browse</a>
+            </li>
+            <li class="active ">
+              <a href="/search/">Search</a>
+            </li>
+            <li>
+              <a href="/download/">Download</a>
+            </li>
+            <li>
+              <a href="/help/">Help</a>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+     <div class="section">
+      <div class="container">
+        <div class="row">
+          <div class="col-md-12">
+            <h1 class="text-center">Search
+              <br>
+            </h1>
+          </div>
+        </div>    </div>
+        </div>
+        <div class="section">
+            <div class="container">
+                <div class="row">
+                    <div class=" col-md-6">
+                      <form role="form" action="" method="post" name="form1">
+                        <div class="form-group">
+                          <div class="input-group">
+                              <script type="text/javascript">
+                              function setaction(){
+                                  var conten = form1.content.value.replace("for example:", "");
+                                  if(conten=="")
+                                  {
+                                      alert("Please input what you want to search")
+                                  }
+                                  else
+                                   {
+                                       var tem = "/searchby/"+String(conten)+"/";
+                                       document.form1.action=tem;
+                                   }
+                                  form1.submit();
+                              }
+                              </script>
+                              <input HaoyuSug='A8A4EBDCB13A40AAB7CFB2ED12F273CE' id="txtKeyword" style="left:250px; width:600px" class="form-control" name="content" value="Lncrna Id or SNP Id or Disease" onFocus="if(value==defaultValue){value='';this.style.color='#000'}" onBlur="if(!value){value=defaultValue;this.style.color='#999'}">
+                              <span class="input-group-btn">
+                                <button class="btn btn-success" type="submit" onclick="setaction()" style="left:250px; top:0px;">Search</a>
+                              </span>
+                        </div>
+                      </div>
+                    </form>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="section">
+              <div class="container">
+                <div class="row">
+                    <div class="col-md-3"></div>
+                  <div class="col-md-6">
+                    <p><font size=4>
+                        Results searched by <font color="blue">{{contents}}.</font></font>
+                    </p>
+                  </div>
+                  <div class="col-md-3"></div>
+                </div>
+              </div>
+            </div>
+    <div class="section">
+      <div class="container">
+        <div class="row">
+          <div class="col-md-12">
+            <table class="table">
+              <thead>
+                <tr>
+                  <th>ID</th>
+                  <th>Location</th>
+                  <th>Disease</th>
+                  <th>SNP</th>
+                  <th>Score</th>
+                  <th>Operation</th>
+                </tr>
+              </thead>
+              <tbody>
+                  {% for line in lists %}
+                <tr>
+                  <td>{{ line.ids }}</td>
+                  <td>{{ line.loca }}</td>
+                  <td>{{ line.dise }}</td>
+                  <td>{{ line.snp }}</td><!--TODO-->
+                  <td>{{ line.dis_sco }}</td>
+                  <td>
+                      <form action="/result/{{ line.ids }}/" method="post">
+                        <button class="btn btn-primary" type="submit" onclick="javascript:location.herf=result/{{ line.ids }}/">View</a>
+                      </form>
+                  </td>
+                </tr>
+                {% endfor %}
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+
+<!-- <table>
+    {% for line in lists %}
+    <tr>
+        <td>{{ line.ids }}</td>
+        <td>{{ line.dise }}</td>
+        <td>{{ line.dis_sco }}</td>
+        <td>{{ line.gene }}</td>
+        <td>{{ line.gen_sco }}</td>
+        <td>{{ line.expre }}</td>
+        <td>
+            <form action="/result/{{ line.ids }}/" method="post">
+                <input type="submit" value="Detial" onclick="javascript:location.herf=result/{{ line.ids }}/">
+            </form>
+        </td>
+    </tr>
+    {% endfor %} -->
+</table>
+</body>
+<script type="text/javascript" charset="utf-8" src="http://www.92find.com/inteltip.js"></script>
+</html>

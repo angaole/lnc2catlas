@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<html>
+{% load static %}
+{% for ll in lists%}
+<head>
+    <title>{{ll.lncrnaid }}</title>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="{%static "css/bootstrap.min.css"%}" rel="stylesheet">
+    <link href="{%static "css/style.css"%}" rel="stylesheet">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <script src="{%static "/js/cytoscape.js"%}"></script>
+    <script type="text/javascript" src="{%static "js/jquery.min.js"%}"></script>
+    <script type="text/javascript" src="{%static "/js/bootstrap.min.js"%}"></script>
+    <link href="{%static "/css/font-awesome.min.css"%}" rel="stylesheet" type="text/css">
+    <link href="{%static "css/bootstrap.css"%}" rel="stylesheet" type="text/css">
+    <script src="{%static "js/dist/echarts.js"%}"></script>
+</head>
+<style>
+#cy {
+    width: 500px;
+    height: 600px;
+    position: absolute;
+    top: 0px;
+    left: 0px;
+}
+.comments {
+    width:100%;
+    overflow:auto;
+    word-break:break-all;
+    line-height: 1.42857143;
+}
+</style>
+<body>
+    <div class="navbar navbar-default navbar-inverse navbar-fixed-top">
+        <div class="container">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar-ex-collapse">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand"><span>Lnc2Catlas</span></a>
+            </div>
+            <div class="collapse navbar-collapse" id="navbar-ex-collapse">
+                <ul class="nav navbar-nav navbar-right ">
+                    <li>
+                        <a href="/home/">Home</a>
+                    </li>
+                    <li>
+                        <a href="/browse/1/20/">Browse</a>
+                    </li>
+                    <li class="active ">
+                        <a href="/search/">Search</a>
+                    </li>
+                    <li>
+                        <a href="/download/">Download</a>
+                    </li>
+                    <li>
+                        <a href="/help/">Help</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <div class="section">
+        <div class="container">
+            <div class="col-md-10">
+                <div class="row">
+                    <h1 class="text-center">{{ll.lncrnaid }}<br></h1>
+                </div>
+                <div class="section">
+                    <div class="container">
+                        <div class="row">
+                            <h4 align="left"><font color="blue">Basic information:</font></h4>
+                            <div class="col-md-6">
+                                <table class="table table-bordered" style="table-layout:fixed;word-wrap:break-word;">
+                                    <tbody>
+                                        <tr>
+                                            <td width="30%">Location</td>
+                                            <td width="70%">{{ ll.location }}</td>
+                                        </tr>
+                                        <tr>
+                                            <td width="30%">Strand</td>
+                                            <td width="70%">{{ ll.strand }}</td>
+                                        </tr>
+                                        <tr>
+                                            <td width="30%">Class</td>
+                                            <td width="70%">{{ ll.classs }}</td>
+                                        </tr>
+                                        <tr>
+                                            <td width="30%">Length</td>
+                                            <td width="70%">{{ ll.length }}</td>
+                                        </tr>
+                                        <tr>
+                                            <td width="30%">Exons</td>
+                                            <td width="70%">{{ ll.exons }}</td>
+                                        </tr>
+                                        <tr>
+                                            <td width="30%">Alias</td>
+                                            <td width="70%">{{ ll.alias }}</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                                <font size=2>RNA Sequence:</font>
+                                <textarea class="comments" rows=4 width="100%">{{ ll.seq }}</textarea>
+                            </div>
+                            <div class="col-md-4">
+                                <img id="lncrna" height="345" width="345">
+                                <script type="text/javascript">
+                                    document.getElementById('lncrna').setAttribute("src", "/static/pictures/"+"{{ll.ids}}"+".png");
+                                </script>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="section">
+                    <div class="container">
+                        <div class="row">
+                            <div class="col-md-10">
+                                <table><tr>
+                                    <td width="95%"><h4 align="left"><font color="blue">SNP:</font></h4></td>
+                                    <td width="5%">
+                                        <form action="/savedise/{{ ll.lncrnaid }}/" method="post">
+                                            <button class="btn btn-primary" type="submit" onclick="javascript:location.herf=savesnp/{{ ll.lncrnaid }}/">Download</a>
+                                        </form>
+                                    </td>
+                                </tr></table>
+                                <div style="overflow-y:auto; height:100px;">
+                                    <table class="table table-bordered" align="center">
+                                        <thead>
+                                            <tr>
+                                                <th>SNPID</th>
+                                                <th>LD</th>
+                                                <th>Score</th>
+                                                <th>Disease</th>
+                                                <th>Option</th>
+                                            </tr>
+                                        </thead>
+                                        {% for line in lists %}
+                                        <tbody>
+                                            <tr>
+                                                <td>{{ line.snpid }}</td>
+                                                <td>{{ line.isld }}</td>
+                                                <td>{{ line.score }}</td>
+                                                <td>{{ line.disease }}</td>
+                                                <td width="7%">
+                                                    <button class="btn btn-primary" onclick="javascript:window.open('/showpicsnp/{{ll.lncrnaid}}/{{line.snpid}}/')">Detail</a>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                        {% endfor %}
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="section">
+                    <div class="container">
+                        <div class="row">
+                            <div class="col-md-10">
+                                <table><tr>
+                                    <td width="95%"><h4 align="left"><font color="blue">Protein:</font></h4></td>
+                                    <td width="5%">
+                                        <form action="/savedise/{{ ll.lncrnaid }}/" method="post">
+                                            <button class="btn btn-primary" type="submit" onclick="javascript:location.herf=saveprotein/{{ ll.lncrnaid }}/">Download</a>
+                                        </form>
+                                    </td>
+                                </tr></table>
+                                <div style="overflow-y:auto; height:100px;">
+                                    <table class="table table-bordered" align="center">
+                                        <thead>
+                                            <tr>
+                                                <th>Protein Name</th>
+                                                <th>Protein Transcript</th>
+                                                <th>Score</th>
+                                                <th>Disease</th>
+                                                <th>Option</th>
+                                            </tr>
+                                        </thead>
+                                        {% for line in lists %}
+                                        <tbody>
+                                            <tr>
+                                                <td>{{ line.proteinname }}</td>
+                                                <td>{{ line.proteintranscript }}</td>
+                                                <td>{{ line.score }}</td>
+                                                <td>{{ line.disease }}</td>
+                                                <td width="7%">
+                                                    <button class="btn btn-primary" onclick="javascript:window.open('/showpicpro/{{ll.lncrnaid}}/{{line.proteintranscript}}/')">Detail</a>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                        {% endfor %}
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="section">
+                    <div class="container">
+                        <div class="row">
+                            <div class="col-md-10">
+                                <table><tr>
+                                    <td width="90%">
+                                        <h4 align="left"><font color="blue">Expression in different tissues:</font></h4>
+                                    </td>
+                                    <td width="5%"><form action="/saveexpre/{{ ll.ids }}/" method="post">
+                                        <button class="btn btn-primary" type="submit" onclick="javascript:location.herf=saveexpre/{{ ll.ids }}/">Download</a></form>
+                                    </td>
+                                </tr></table>
+                                <table style="BORDER-BOTTOM: #888 1px ridge; BORDER-LEFT: #888 1px ridge; BACKGROUND-COLOR: #ffffff; BORDER-TOP: #888 1px ridge; BORDER-RIGHT: #888 1px ridge">
+                                    <tr><td>
+                                        <div id="main" style="width:940px;height:550px">
+                                            <script type="text/javascript">
+                                            require.config({
+                                                paths:{echarts: "{%static "js/dist/"%}"}
+                                            });
+                                            require(['echarts', 'echarts/chart/bar',],
+                                                function(ec){
+                                                    var myChart = ec.init(document.getElementById('main'));
+                                                    var option = {
+                                                        toolbox :{
+                                                            show : true,
+                                                            feature : {
+                                                                saveAsImage : {show: true}
+                                                            }
+                                                        },
+                                                        xAxis : [ {
+                                                            axisLabel: {rotate: 70},
+                                                            type : 'category',
+                                                            data : ['Adrenocortical Carcinoma','Bladder Urothelial Carcinoma','Breast Invasive Carcinoma','Cervical Squamous Cell Carcinoma and Endocervical Adenocarcinoma','Cholangiocarcinoma','Colon Adenocarcinoma','Lymphoid Neoplasm Diffuse Large B-cell Lymphoma','Esophageal Carcinoma','Glioblastoma Multiforme','Head and Neck Squamous Cell Carcinoma','Kidney Chromophobe','Kidney Renal Clear Cell Carcinoma','Kidney Renal Papillary Cell Carcinoma','Acute Myeloid Leukemia','Brain Lower Grade Glioma','Liver Hepatocellular Carcinoma','Lung Adenocarcinoma','Lung Squamous Cell Carcinoma','Mesothelioma','Ovarian Serous Cystadenocarcinoma','Pancreatic Adenocarcinoma','Pheochromocytoma and Paraganglioma','Prostate Adenocarcinoma','Rectum Adenocarcinoma','Sarcoma','Skin Cutaneous Melanoma','Stomach Adenocarcinoma','Testicular Germ Cell Tumors','Thyroid Carcinoma','Thymoma','Uterine Corpus Endometrial Carcinoma','Uterine Carcinosarcoma','Uveal Melanoma']
+                                                        }],
+                                                        grid: {
+                                                            x:40, x2:40, y2:250
+                                                        },
+                                                        yAxis : [{
+                                                            type : 'value'
+                                                        }],
+                                                        series : [{
+                                                            name:"number",
+                                                            type:"bar",
+                                                            data:{{list_expre}},
+                                                            barMaxWidth: 15,
+                                                            itemStyle:{
+                                                                normal:{
+                                                                    color:'#bbe2e8',
+                                                                }
+                                                            }
+                                                        }]
+                                                    };
+                                                    myChart.setOption(option);
+                                                });
+                                            </script>
+                                        </div>
+                                    </td></tr>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="section">
+                    <div class="container">
+                        <div class="row">
+                            <div class="col-md-10">
+                                <h4 align="left"><font color="blue">what:</font></h4>
+                                <div id="cy" style="width:1000px;height:600px">
+                                    <script>
+                                    $.getJSON('/static/data0.json', function(datas){
+                                        var cy = cytoscape({
+                                            container: document.getElementById('cy'),
+                                            elements:datas,
+                                            style: [
+                                                {
+                                                    selector: 'node',
+                                                    style: {
+                                                        'width':10,
+                                                        'height':10,
+                                                        //shape: 'hexagon',
+                                                        'background-color': '#6FB1FC',//'#EDA1ED', '#86B342', '#F5A45D'
+                                                        //label: 'data(id)'
+                                                    }
+                                                },
+                                                {
+                                                    selector : 'edge',
+                                                    style : {
+                                                        'width' : 0.5,
+                                                        //'line-color':'#B1C1F2'
+                                                    }
+                                                }
+                                            ],
+                                            layout: {
+                                                name:'cose'
+                                            }
+                                        });
+                                    })
+                                    </script>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-2">
+
+            </div>
+        </div>
+    </div>
+
+</body>
+{% endfor %}
+</html>
